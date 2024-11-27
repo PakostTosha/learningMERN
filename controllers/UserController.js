@@ -1,18 +1,11 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { validationResult } from "express-validator";
 import UserModel from "../models/User.js";
 import User from "../models/User.js";
 
 // Регистрация
 export const register = async (req, res) => {
 	try {
-		// Валидация запроса
-		const errors = validationResult(req);
-		if (!errors.isEmpty()) {
-			return res.status(400).json(errors.array());
-		}
-
 		// Вытаскиваем данные из тела запроса
 		const { email, password, fullName, avatarUrl } = req.body;
 		// Хэшируем пароль

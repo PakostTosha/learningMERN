@@ -7,9 +7,8 @@ import {
 	loginValidation,
 	postCreateValidation,
 } from "./validations.js";
-import checkAuth from "./utils/checkAuth.js";
-import * as UserController from "./controllers/UserController.js";
-import * as PostController from "./controllers/PostController.js";
+import { UserController, PostController } from "./controllers/index.js";
+import { checkAuth, handleValidationErrors } from "./utils/index.js";
 
 // Подключение к БД в облаке mongoDB и сообщение статуса подключения
 mongoose
@@ -41,10 +40,21 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Регистрация
-app.post("/auth/register", registerValidation, UserController.register);
+app.post(
+	"/auth/register",
+	registerValidation,
+	handleValidationErrors,
+	UserController.register
+);
 // Авторизация
-app.post("/auth/login", loginValidation, UserController.login);
+app.post(
+	"/auth/login",
+	loginValidation,
+	handleValidationErrors,
+	UserController.login
+);
 
+// Загрузкса файлов
 app.post("/upload", checkAuth, upload.single("image"), (req, res) => {
 	res.json({
 		url: `uploads/${req.file.originalname}`,
@@ -57,9 +67,21 @@ app.get("/auth/me", checkAuth, UserController.getMe);
 // CRUD-операции со статьями
 app.get("/posts", PostController.getAll);
 app.get("/posts/:id", PostController.getOne);
-app.post("/posts", checkAuth, postCreateValidation, PostController.create);
+app.post(
+	"/posts",
+	checkAuth,
+	postCreateValidation,
+	handleValidationErrors,
+	PostController.create
+);
 app.delete("/posts/:id", checkAuth, PostController.remove);
-app.patch("/posts/:id", checkAuth, PostController.update);
+app.patch(
+	"/posts/:id",
+	checkAuth,
+	postCreateValidation,
+	handleValidationErrors,
+	PostController.update
+);
 
 // Ставим слушатель приложение на локальный порт:4444
 app.listen(4444, (error) => {
