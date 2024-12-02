@@ -24,7 +24,11 @@ export const loginValidation = [
 // Массив правил валидации создания статей
 export const postCreateValidation = [
 	body("title", "Введите заголовок статьи").isLength({ min: 3 }).isString(),
-	body("text", "Введите текст статьи").isLength({ min: 10 }).isString(),
-	body("tags", "Неверный формат тэгов (укажите массив)").optional().isString(),
+	body("text", "Введите текст статьи, содержащий больше 10 символов")
+		.isLength({ min: 10 })
+		.isString(),
+	body("tags", "Неверный формат тэгов (перечислите тэги строкой через запятую)")
+		.optional()
+		.isString(),
 	body("imagesUrl", "Неверная ссылка на изображение").optional().isString(),
 ];

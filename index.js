@@ -16,7 +16,7 @@ mongoose
 	.connect(
 		"mongodb+srv://polyakovaa03:Chubrikazimov2003!@cluster0.gyqlk.mongodb.net/blog?retryWrites=true&w=majority&appName=Cluster0"
 	)
-	.then(() => console.log("DB OK"))
+	.then(() => console.log("Successful connection to mongodb"))
 	.catch((err) => console.log("DB error,", err));
 
 // Создание express приложения
@@ -92,5 +92,5 @@ app.listen(4444, (error) => {
 	if (error) {
 		return console.log(error);
 	}
-	console.log("Server OK");
+	console.log("Server status: OK");
 });

@@ -24,7 +24,7 @@ export const create = async (req, res) => {
 			title: req.body.title,
 			text: req.body.text,
 			imageUrl: req.body.imageUrl,
-			tags: req.body.tags,
+			tags: req.body.tags.split(","),
 			user: req.userId,
 		});
 
@@ -78,6 +78,7 @@ export const getOne = async (req, res) => {
 				returnDocument: "after",
 			}
 		)
+			.populate("user", ["fullName", "avatarUrl"])
 			.then((doc) => {
 				if (!doc) {
 					return res.status(400).json({ message: "Статья не найдена" });
@@ -128,14 +129,14 @@ export const update = async (req, res) => {
 			title: req.body.title,
 			text: req.body.text,
 			imageUrl: req.body.imageUrl,
-			tags: req.body.tags,
+			tags: req.body.tags.split(","),
 			user: req.userId,
 		});
 		res.json({ success: true });
 	} catch (err) {
 		console.log(err);
 		res.status(500).json({
-			message: "Не удалось обновить статью",
+			message: "Не удалось обновить статью" + err,
 		});
 	}
 };
